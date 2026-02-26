@@ -4,22 +4,27 @@ import { Authenticated, Unauthenticated } from "convex/react";
 import { SignInButton, UserButton } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { api } from "@/../convex/_generated/api";
+import { useStoreUserEffect } from "@/hooks/useStoreUserEffect";
 
 export default function Home() {
+  const { isLoading, isAuthenticated } = useStoreUserEffect();
   return (
-    <>
-      <Authenticated>
-        <UserButton />
-        <Content />
-      </Authenticated>
-      <Unauthenticated>
+    <main>
+      {isLoading ? (
+        <>Loading...</>
+      ) : !isAuthenticated ? (
         <SignInButton />
-      </Unauthenticated>
-    </>
+      ) : (
+        <>
+          <UserButton />
+          <Content />
+        </>
+      )}
+    </main>
   );
 }
 
 function Content() {
-  const tasks = useQuery(api.tasks.get);
-  return <div>Authenticated content: {tasks?.length}</div>;
+  const messages = useQuery(api.messages.list);
+  return <div>Authenticated content: {messages?.length}</div>;  
 }
