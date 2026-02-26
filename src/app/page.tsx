@@ -16,7 +16,7 @@ export default function Home() {
         <SignInButton />
       ) : (
         <>
-          <UserButton />
+          <UserButton showName/>
           <Content />
         </>
       )}
@@ -26,5 +26,5 @@ export default function Home() {
 
 function Content() {
   const messages = useQuery(api.messages.list);
-  return <div>Authenticated content: {messages?.length}</div>;  
+  return <div>Authenticated content: {messages?.length}</div>;
 }
