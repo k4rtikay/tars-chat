@@ -3,6 +3,7 @@
 import { useStoreUserEffect } from "@/hooks/useStoreUserEffect";
 import { SignInButton } from "@clerk/nextjs";
 import Sidebar from "@/components/website/sidebar";
+import { ChatProvider } from "@/components/website/chat-context";
 import { MessageSquare } from "lucide-react";
 
 export default function ChatShell({
@@ -44,11 +45,13 @@ export default function ChatShell({
     }
 
     return (
-        <div className="flex h-screen">
-            <Sidebar currentUserId={userId} />
-            <main className="flex-1 flex flex-col overflow-hidden">
-                {children}
-            </main>
-        </div>
+        <ChatProvider>
+            <div className="flex h-screen">
+                <Sidebar currentUserId={userId} />
+                <main className="flex-1 flex flex-col overflow-hidden">
+                    {children}
+                </main>
+            </div>
+        </ChatProvider>
     );
 }

@@ -1,0 +1,57 @@
+export default function Loading() {
+    return (
+        <>
+            {/* Skeleton header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-border shrink-0">
+                <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-accent animate-pulse" />
+                    <div className="h-4 w-24 bg-accent animate-pulse rounded" />
+                </div>
+                <div className="w-8 h-8 rounded-full bg-accent animate-pulse" />
+            </div>
+
+            {/* Skeleton messages */}
+            <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">
+                {/* Left-aligned messages */}
+                <div className="flex gap-2 max-w-[65%]">
+                    <div className="w-7 h-7 rounded-full bg-accent animate-pulse shrink-0 mt-1" />
+                    <div className="space-y-2">
+                        <div className="h-10 w-48 bg-accent animate-pulse rounded-2xl rounded-tl-sm" />
+                        <div className="h-10 w-32 bg-accent animate-pulse rounded-2xl rounded-tl-sm" />
+                    </div>
+                </div>
+
+                {/* Right-aligned messages */}
+                <div className="flex justify-end">
+                    <div className="space-y-2 max-w-[65%]">
+                        <div className="h-10 w-40 bg-accent animate-pulse rounded-2xl rounded-tr-sm ml-auto" />
+                    </div>
+                </div>
+
+                {/* Left-aligned messages */}
+                <div className="flex gap-2 max-w-[65%]">
+                    <div className="w-7 h-7 rounded-full bg-accent animate-pulse shrink-0 mt-1" />
+                    <div className="space-y-2">
+                        <div className="h-10 w-56 bg-accent animate-pulse rounded-2xl rounded-tl-sm" />
+                    </div>
+                </div>
+
+                {/* Right-aligned messages */}
+                <div className="flex justify-end">
+                    <div className="space-y-2 max-w-[65%]">
+                        <div className="h-10 w-44 bg-accent animate-pulse rounded-2xl rounded-tr-sm ml-auto" />
+                        <div className="h-10 w-28 bg-accent animate-pulse rounded-2xl rounded-tr-sm ml-auto" />
+                    </div>
+                </div>
+            </div>
+
+            {/* Skeleton input */}
+            <div className="shrink-0 border-t border-border px-6 py-4">
+                <div className="flex items-end gap-3">
+                    <div className="h-10 flex-1 bg-accent animate-pulse rounded-md" />
+                    <div className="h-10 w-10 bg-accent animate-pulse rounded-lg shrink-0" />
+                </div>
+            </div>
+        </>
+    );
+}

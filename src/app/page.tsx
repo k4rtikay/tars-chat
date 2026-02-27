@@ -1,11 +1,17 @@
 "use client";
 
-import { UserButton } from "@clerk/nextjs";
-import { useQuery } from "convex/react";
-import { api } from "@/../convex/_generated/api";
 import { MessageSquare } from "lucide-react";
+import { UserButton } from "@clerk/nextjs";
+import { useChatContext } from "@/components/website/chat-context";
+import ChatView from "@/components/website/chat-view";
 
 export default function Home() {
+  const { selectedUser } = useChatContext();
+
+  if (selectedUser) {
+    return <ChatView user={selectedUser} />;
+  }
+
   return (
     <>
       {/* Header */}
@@ -20,7 +26,7 @@ export default function Home() {
         />
       </header>
 
-      {/* Main content */}
+      {/* Empty state */}
       <div className="flex-1 flex items-center justify-center overflow-y-auto">
         <div className="flex flex-col items-center gap-4 text-center px-8">
           <div className="flex items-center justify-center w-12 h-12 rounded-full bg-accent">
@@ -38,9 +44,4 @@ export default function Home() {
       </div>
     </>
   );
-}
-
-function Content() {
-  const messages = useQuery(api.messages.list);
-  return <div>Authenticated content: {messages?.length}</div>;
 }

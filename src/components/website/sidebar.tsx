@@ -48,6 +48,7 @@ export default function Sidebar({
                     <SearchResults
                         searchQuery={searchQuery.trim()}
                         currentUserId={currentUserId}
+                        onUserSelected={() => setSearchQuery("")}
                     />
                 ) : hasConversations ? (
                     // TODO: render conversation list
