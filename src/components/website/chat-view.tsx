@@ -147,7 +147,6 @@ export default function ChatView({ user }: ChatViewProps) {
         </div>
       </header>
 
-      {/* Messages */}
       <MessageList
         messages={messages}
         currentUserId={currentUserId}
@@ -155,13 +154,12 @@ export default function ChatView({ user }: ChatViewProps) {
         messagesEndRef={messagesEndRef}
       />
 
-      {/* Typing indicator */}
+      
       <TypingIndicator
         conversationId={conversationId}
         currentUserId={currentUserId}
       />
-
-      {/* Input area */}
+      
       <form
         ref={formRef}
         onSubmit={handleSubmit}

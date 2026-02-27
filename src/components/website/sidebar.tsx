@@ -18,7 +18,7 @@ export default function Sidebar({ currentUserId }: SidebarProps) {
 
     return (
         <aside className="flex flex-col w-full md:w-80 h-screen md:border-r border-border bg-background">
-            {/* Header */}
+            
             <div className="px-5 pt-5 pb-4 space-y-4 shrink-0">
                 <div className="flex items-center justify-between">
                     <h1 className="text-lg font-semibold tracking-tight">tars chat</h1>
@@ -42,7 +42,6 @@ export default function Sidebar({ currentUserId }: SidebarProps) {
                 </div>
             </div>
 
-            {/* Body */}
             <div className="flex-1 overflow-y-auto">
                 {isSearching ? (
                     <SearchResults
