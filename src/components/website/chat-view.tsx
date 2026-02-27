@@ -9,7 +9,7 @@ import { ChatUser, useChatContext } from "@/components/website/chat-context";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/../convex/_generated/api";
 import { Id } from "@/../convex/_generated/dataModel";
-import { formatMessageTime } from "@/lib/format-time";
+import MessageList from "@/components/website/message-list";
 
 interface ChatViewProps {
   user: ChatUser;
@@ -123,41 +123,13 @@ export default function ChatView({ user }: ChatViewProps) {
         />
       </header>
 
-      {/* Messages area */}
-      <div className="flex-1 overflow-y-auto px-6 py-6">
-        {!messages || messages.length === 0 ? (
-          <div className="flex items-center justify-center h-full">
-            <p className="text-[13px] text-muted-foreground">
-              Say something nice to {user.name} ✨
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {messages.map((msg) => {
-              const isMine = msg.senderId === currentUserId;
-              return (
-                <div
-                  key={msg._id}
-                  className={`flex flex-col ${isMine ? "items-end" : "items-start"}`}
-                >
-                  <div
-                    className={`max-w-[65%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${isMine
-                      ? "bg-primary text-primary-foreground rounded-tr-sm"
-                      : "bg-accent text-foreground rounded-tl-sm"
-                      }`}
-                  >
-                    {msg.body}
-                  </div>
-                  <span className="text-[10px] text-muted-foreground mt-1 px-1">
-                    {formatMessageTime(msg._creationTime)}
-                  </span>
-                </div>
-              );
-            })}
-            <div ref={messagesEndRef} />
-          </div>
-        )}
-      </div>
+      {/* Messages */}
+      <MessageList
+        messages={messages}
+        currentUserId={currentUserId}
+        userName={user.name}
+        messagesEndRef={messagesEndRef}
+      />
 
       {/* Input area */}
       <form
