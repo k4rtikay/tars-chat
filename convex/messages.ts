@@ -1,41 +1,39 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
-
-export const send = mutation({
-  args: { body: v.string() },
+export const list = query({
+  args: { conversationId: v.id("conversations") },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      throw new Error("Unauthenticated call to mutation");
-    }
-    const user = await ctx.db
-      .query("users")
-      .withIndex("by_token", (q) =>
-        q.eq("tokenIdentifier", identity.tokenIdentifier),
+    return await ctx.db
+      .query("messages")
+      .withIndex("by_conversation", (q) =>
+        q.eq("conversationId", args.conversationId),
       )
-      .unique();
-    if (!user) {
-      throw new Error("Unauthenticated call to mutation");
-    }
-    await ctx.db.insert("messages", { body: args.body, user: user._id });
+      .collect();
   },
 });
 
-export const list = query({
-  args: {},
-  handler: async (ctx) => {
-    const messages = await ctx.db.query("messages").collect();
-    return Promise.all(
-      messages.map(async (message) => {
-        // For each message in this channel, fetch the `User` who wrote it and
-        // insert their name into the `author` field.
-        const user = await ctx.db.get(message.user);
-        return {
-          author: user?.name ?? "Anonymous",
-          ...message,
-        };
-      }),
-    );
+export const send = mutation({
+  args: {
+    conversationId: v.id("conversations"),
+    senderId: v.id("users"),
+    body: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const now = Date.now();
+
+    // Insert the message
+    await ctx.db.insert("messages", {
+      conversationId: args.conversationId,
+      senderId: args.senderId,
+      body: args.body,
+    });
+
+    // Update the conversation with last message preview data
+    await ctx.db.patch(args.conversationId, {
+      lastMessageBody: args.body,
+      lastMessageSenderId: args.senderId,
+      lastMessageTime: now,
+    });
   },
 });

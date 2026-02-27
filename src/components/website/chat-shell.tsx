@@ -45,7 +45,7 @@ export default function ChatShell({
     }
 
     return (
-        <ChatProvider>
+        <ChatProvider currentUserId={userId}>
             <div className="flex h-screen">
                 <Sidebar currentUserId={userId} />
                 <main className="flex-1 flex flex-col overflow-hidden">

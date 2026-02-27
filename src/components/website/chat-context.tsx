@@ -12,15 +12,22 @@ export interface ChatUser {
 interface ChatContextValue {
     selectedUser: ChatUser | null;
     setSelectedUser: (user: ChatUser | null) => void;
+    currentUserId: Id<"users"> | null;
 }
 
 const ChatContext = createContext<ChatContextValue | null>(null);
 
-export function ChatProvider({ children }: { children: React.ReactNode }) {
+export function ChatProvider({
+    children,
+    currentUserId,
+}: {
+    children: React.ReactNode;
+    currentUserId: Id<"users"> | null;
+}) {
     const [selectedUser, setSelectedUser] = useState<ChatUser | null>(null);
 
     return (
-        <ChatContext.Provider value={{ selectedUser, setSelectedUser }}>
+        <ChatContext.Provider value={{ selectedUser, setSelectedUser, currentUserId }}>
             {children}
         </ChatContext.Provider>
     );
