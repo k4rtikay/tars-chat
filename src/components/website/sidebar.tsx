@@ -37,7 +37,7 @@ export default function Sidebar({ currentUserId }: SidebarProps) {
                         placeholder="Search people..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-9 h-9 text-sm bg-accent/50 border-none focus-visible:ring-1"
+                        className="pl-9 h-9 text-sm bg-accent/70 border-none focus-visible:ring-1"
                     />
                 </div>
             </div>

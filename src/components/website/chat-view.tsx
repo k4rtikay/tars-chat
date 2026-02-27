@@ -159,7 +159,7 @@ export default function ChatView({ user }: ChatViewProps) {
         conversationId={conversationId}
         currentUserId={currentUserId}
       />
-      
+
       <form
         ref={formRef}
         onSubmit={handleSubmit}
@@ -176,7 +176,7 @@ export default function ChatView({ user }: ChatViewProps) {
             }}
             onKeyDown={handleKeyDown}
             rows={1}
-            className="min-h-[40px] max-h-[160px] resize-none text-sm bg-accent/50 border-none focus-visible:ring-1"
+            className="min-h-[40px] max-h-[160px] resize-none text-sm bg-accent/70 border-none focus-visible:ring-1"
           />
           <Button
             type="submit"
