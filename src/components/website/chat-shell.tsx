@@ -6,8 +6,9 @@ import { SignInButton } from "@clerk/nextjs";
 import { useMutation } from "convex/react";
 import { api } from "@/../convex/_generated/api";
 import Sidebar from "@/components/website/sidebar";
-import { ChatProvider } from "@/components/website/chat-context";
+import { ChatProvider, useChatContext } from "@/components/website/chat-context";
 import { MessageSquare } from "lucide-react";
+import { Id } from "@/../convex/_generated/dataModel";
 
 export default function ChatShell({
     children,
@@ -64,12 +65,28 @@ export default function ChatShell({
 
     return (
         <ChatProvider currentUserId={userId}>
-            <div className="flex h-screen">
-                <Sidebar currentUserId={userId} />
-                <main className="flex-1 flex flex-col overflow-hidden">
-                    {children}
-                </main>
-            </div>
+            <ChatLayout currentUserId={userId}>{children}</ChatLayout>
         </ChatProvider>
+    );
+}
+
+function ChatLayout({
+    children,
+    currentUserId,
+}: {
+    children: React.ReactNode;
+    currentUserId: Id<"users"> | null;
+}) {
+    const { selectedUser } = useChatContext();
+
+    return (
+        <div className="flex h-screen">            
+            <div className={`${selectedUser ? "hidden" : "flex"} md:flex flex-col w-full md:w-auto`}>
+                <Sidebar currentUserId={currentUserId} />
+            </div>
+            <main className={`${selectedUser ? "flex" : "hidden"} md:flex flex-1 flex-col overflow-hidden`}>
+                {children}
+            </main>
+        </div>
     );
 }

@@ -16,7 +16,7 @@ export default function Sidebar({ currentUserId }: SidebarProps) {
     const isSearching = searchQuery.trim().length > 0;
 
     return (
-        <aside className="flex flex-col w-80 h-screen border-r border-border bg-background">
+        <aside className="flex flex-col w-full md:w-80 h-screen md:border-r border-border bg-background">
             {/* Header */}
             <div className="px-5 pt-5 pb-4 space-y-4 shrink-0">
                 <h1 className="text-lg font-semibold tracking-tight">tars chat</h1>

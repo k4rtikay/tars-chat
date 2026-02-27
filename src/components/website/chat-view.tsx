@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, FormEvent } from "react";
 import { UserButton } from "@clerk/nextjs";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { SendHorizontal, User } from "lucide-react";
+import { SendHorizontal, User, ArrowLeft } from "lucide-react";
 import { ChatUser, useChatContext } from "@/components/website/chat-context";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/../convex/_generated/api";
@@ -17,7 +17,7 @@ interface ChatViewProps {
 }
 
 export default function ChatView({ user }: ChatViewProps) {
-  const { currentUserId } = useChatContext();
+  const { currentUserId, setSelectedUser } = useChatContext();
   const [message, setMessage] = useState("");
   const [conversationId, setConversationId] = useState<Id<"conversations"> | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -100,8 +100,14 @@ export default function ChatView({ user }: ChatViewProps) {
   return (
     <>
       {/* Header */}
-      <header className="flex items-center justify-between px-6 py-4 border-b border-border shrink-0">
-        <div className="flex items-center gap-3">
+      <header className="flex items-center justify-between px-4 md:px-6 py-4 border-b border-border shrink-0">
+        <div className="flex items-center gap-2 md:gap-3">
+          <button
+            onClick={() => setSelectedUser(null)}
+            className="md:hidden flex items-center justify-center w-8 h-8 rounded-lg hover:bg-accent transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
           {user.avatarUrl ? (
             <img
               src={user.avatarUrl}
