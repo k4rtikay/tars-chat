@@ -5,6 +5,8 @@ import { api } from "@/../convex/_generated/api";
 import { Id } from "@/../convex/_generated/dataModel";
 import { User } from "lucide-react";
 import { useChatContext } from "@/components/website/chat-context";
+import { Badge } from "@/components/ui/badge";
+import { formatMessageTime } from "@/lib/format-time";
 
 interface ConversationListProps {
     currentUserId: Id<"users"> | null;
@@ -82,11 +84,18 @@ export default function ConversationList({ currentUserId, emptyFallback }: Conve
                                 <span className="text-sm font-medium truncate">
                                     {conv.otherUser.name}
                                 </span>
-                                {conv.unreadCount > 0 && (
-                                    <span className="flex items-center justify-center min-w-[20px] h-5 px-1.5 text-[11px] font-semibold bg-primary text-primary-foreground rounded-full shrink-0">
-                                        {conv.unreadCount}
-                                    </span>
-                                )}
+                                <div className="flex items-center gap-2 shrink-0">
+                                    {conv.lastMessageTime && (
+                                        <span className="text-[11px] text-muted-foreground">
+                                            {formatMessageTime(conv.lastMessageTime)}
+                                        </span>
+                                    )}
+                                    {conv.unreadCount > 0 && (
+                                        <Badge className="min-w-[20px] h-5 px-1.5 text-[11px] font-semibold rounded-full justify-center">
+                                            {conv.unreadCount}
+                                        </Badge>
+                                    )}
+                                </div>
                             </div>
                             {conv.lastMessageBody && (
                                 <p className={`text-[13px] truncate mt-0.5 ${conv.unreadCount > 0

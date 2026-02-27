@@ -9,6 +9,7 @@ import { ChatUser, useChatContext } from "@/components/website/chat-context";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/../convex/_generated/api";
 import { Id } from "@/../convex/_generated/dataModel";
+import { formatMessageTime } from "@/lib/format-time";
 
 interface ChatViewProps {
   user: ChatUser;
@@ -137,7 +138,7 @@ export default function ChatView({ user }: ChatViewProps) {
               return (
                 <div
                   key={msg._id}
-                  className={`flex ${isMine ? "justify-end" : "justify-start"}`}
+                  className={`flex flex-col ${isMine ? "items-end" : "items-start"}`}
                 >
                   <div
                     className={`max-w-[65%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${isMine
@@ -147,6 +148,9 @@ export default function ChatView({ user }: ChatViewProps) {
                   >
                     {msg.body}
                   </div>
+                  <span className="text-[10px] text-muted-foreground mt-1 px-1">
+                    {formatMessageTime(msg._creationTime)}
+                  </span>
                 </div>
               );
             })}
