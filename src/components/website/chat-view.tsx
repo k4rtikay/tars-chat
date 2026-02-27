@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, FormEvent } from "react";
+import { useState, useRef, useEffect, useCallback, FormEvent } from "react";
 import { UserButton } from "@clerk/nextjs";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -10,11 +10,14 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "@/../convex/_generated/api";
 import { Id } from "@/../convex/_generated/dataModel";
 import MessageList from "@/components/website/message-list";
+import TypingIndicator from "@/components/website/typing-indicator";
 import { isOnline } from "@/lib/format-time";
 
 interface ChatViewProps {
   user: ChatUser;
 }
+
+const TYPING_THROTTLE = 2000; // Fire setTyping at most every 2 seconds
 
 export default function ChatView({ user }: ChatViewProps) {
   const { currentUserId, setSelectedUser } = useChatContext();
@@ -23,10 +26,13 @@ export default function ChatView({ user }: ChatViewProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const lastTypingRef = useRef(0);
 
   const getOrCreateConversation = useMutation(api.conversations.getOrCreate);
   const sendMessage = useMutation(api.messages.send);
   const markRead = useMutation(api.conversations.markRead);
+  const setTyping = useMutation(api.typing.setTyping);
+  const clearTyping = useMutation(api.typing.clearTyping);
   const messages = useQuery(
     api.messages.list,
     conversationId ? { conversationId } : "skip",
@@ -76,6 +82,17 @@ export default function ChatView({ user }: ChatViewProps) {
     }
   }, [message]);
 
+  // Throttled typing indicator
+  const handleTyping = useCallback(() => {
+    if (!conversationId || !currentUserId) return;
+
+    const now = Date.now();
+    if (now - lastTypingRef.current > TYPING_THROTTLE) {
+      lastTypingRef.current = now;
+      setTyping({ conversationId, userId: currentUserId });
+    }
+  }, [conversationId, currentUserId, setTyping]);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!message.trim() || !conversationId || !currentUserId) return;
@@ -83,11 +100,11 @@ export default function ChatView({ user }: ChatViewProps) {
     const body = message.trim();
     setMessage("");
 
-    await sendMessage({
-      conversationId,
-      senderId: currentUserId,
-      body,
-    });
+    // Clear typing indicator and send message
+    await Promise.all([
+      clearTyping({ conversationId, userId: currentUserId }),
+      sendMessage({ conversationId, senderId: currentUserId, body }),
+    ]);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -146,6 +163,12 @@ export default function ChatView({ user }: ChatViewProps) {
         messagesEndRef={messagesEndRef}
       />
 
+      {/* Typing indicator */}
+      <TypingIndicator
+        conversationId={conversationId}
+        currentUserId={currentUserId}
+      />
+
       {/* Input area */}
       <form
         ref={formRef}
@@ -157,7 +180,10 @@ export default function ChatView({ user }: ChatViewProps) {
             ref={textareaRef}
             placeholder="Type a message..."
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) => {
+              setMessage(e.target.value);
+              handleTyping();
+            }}
             onKeyDown={handleKeyDown}
             rows={1}
             className="min-h-[40px] max-h-[160px] resize-none text-sm bg-accent/50 border-none focus-visible:ring-1"

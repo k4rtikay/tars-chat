@@ -28,4 +28,10 @@ export default defineSchema({
     senderId: v.id("users"),
     body: v.string(),
   }).index("by_conversation", ["conversationId"]),
+
+  typingIndicators: defineTable({
+    conversationId: v.id("conversations"),
+    userId: v.id("users"),
+    updatedAt: v.number(),
+  }).index("by_conversation", ["conversationId"]),
 });
