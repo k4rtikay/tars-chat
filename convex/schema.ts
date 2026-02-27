@@ -6,6 +6,7 @@ export default defineSchema({
     name: v.string(),
     tokenIdentifier: v.string(),
     avatarUrl: v.optional(v.string()),
+    lastSeen: v.optional(v.number()),
   }).index("by_token", ["tokenIdentifier"]),
 
   conversations: defineTable({

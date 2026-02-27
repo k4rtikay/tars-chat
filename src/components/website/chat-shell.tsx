@@ -1,7 +1,10 @@
 "use client";
 
+import { useEffect } from "react";
 import { useStoreUserEffect } from "@/hooks/useStoreUserEffect";
 import { SignInButton } from "@clerk/nextjs";
+import { useMutation } from "convex/react";
+import { api } from "@/../convex/_generated/api";
 import Sidebar from "@/components/website/sidebar";
 import { ChatProvider } from "@/components/website/chat-context";
 import { MessageSquare } from "lucide-react";
@@ -12,6 +15,21 @@ export default function ChatShell({
     children: React.ReactNode;
 }) {
     const { isLoading, isAuthenticated, userId } = useStoreUserEffect();
+    const updateLastSeen = useMutation(api.users.updateLastSeen);
+
+    // Heartbeat — update lastSeen every 30 seconds
+    useEffect(() => {
+        if (!userId) return;
+
+        // Fire immediately on mount
+        updateLastSeen({ userId });
+
+        const interval = setInterval(() => {
+            updateLastSeen({ userId });
+        }, 30_000);
+
+        return () => clearInterval(interval);
+    }, [userId, updateLastSeen]);
 
     if (isLoading) {
         return (

@@ -6,7 +6,7 @@ import { Id } from "@/../convex/_generated/dataModel";
 import { User } from "lucide-react";
 import { useChatContext } from "@/components/website/chat-context";
 import { Badge } from "@/components/ui/badge";
-import { formatMessageTime } from "@/lib/format-time";
+import { formatMessageTime, isOnline } from "@/lib/format-time";
 
 interface ConversationListProps {
     currentUserId: Id<"users"> | null;
@@ -65,18 +65,23 @@ export default function ConversationList({ currentUserId, emptyFallback }: Conve
                         className={`flex items-center gap-3 w-full px-3 py-3 rounded-lg text-left transition-colors ${isActive ? "bg-accent" : "hover:bg-accent/60"
                             }`}
                     >
-                        {/* Avatar */}
-                        {conv.otherUser.avatarUrl ? (
-                            <img
-                                src={conv.otherUser.avatarUrl}
-                                alt={conv.otherUser.name}
-                                className="w-10 h-10 rounded-full object-cover shrink-0"
-                            />
-                        ) : (
-                            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-accent shrink-0">
-                                <User className="w-4 h-4 text-muted-foreground" />
-                            </div>
-                        )}
+                        {/* Avatar with online indicator */}
+                        <div className="relative shrink-0">
+                            {conv.otherUser.avatarUrl ? (
+                                <img
+                                    src={conv.otherUser.avatarUrl}
+                                    alt={conv.otherUser.name}
+                                    className="w-10 h-10 rounded-full object-cover"
+                                />
+                            ) : (
+                                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-accent">
+                                    <User className="w-4 h-4 text-muted-foreground" />
+                                </div>
+                            )}
+                            {isOnline(conv.otherUser.lastSeen) && (
+                                <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full ring-2 ring-background" />
+                            )}
+                        </div>
 
                         {/* Name + preview */}
                         <div className="flex-1 min-w-0">

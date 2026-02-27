@@ -108,7 +108,7 @@ export const listForUser = query({
                     return {
                         _id: conv._id,
                         otherUser: otherUser
-                            ? { _id: otherUser._id, name: otherUser.name, avatarUrl: otherUser.avatarUrl }
+                            ? { _id: otherUser._id, name: otherUser.name, avatarUrl: otherUser.avatarUrl, lastSeen: otherUser.lastSeen }
                             : null,
                         lastMessageBody: conv.lastMessageBody,
                         lastMessageSenderId: conv.lastMessageSenderId,

@@ -10,6 +10,7 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "@/../convex/_generated/api";
 import { Id } from "@/../convex/_generated/dataModel";
 import MessageList from "@/components/website/message-list";
+import { isOnline } from "@/lib/format-time";
 
 interface ChatViewProps {
   user: ChatUser;
@@ -30,6 +31,8 @@ export default function ChatView({ user }: ChatViewProps) {
     api.messages.list,
     conversationId ? { conversationId } : "skip",
   );
+  const otherUser = useQuery(api.users.getById, { userId: user._id });
+  const online = isOnline(otherUser?.lastSeen);
 
   // Get or create conversation when the selected user changes
   useEffect(() => {
@@ -112,6 +115,12 @@ export default function ChatView({ user }: ChatViewProps) {
           )}
           <div>
             <p className="text-sm font-semibold leading-tight">{user.name}</p>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <span className={`w-2 h-2 rounded-full ${online ? "bg-emerald-500" : "bg-muted-foreground/40"}`} />
+              <span className="text-[11px] text-muted-foreground">
+                {online ? "Online" : "Offline"}
+              </span>
+            </div>
           </div>
         </div>
         <UserButton

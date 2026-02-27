@@ -35,3 +35,10 @@ export function formatMessageTime(timestamp: number): string {
 
     return `${month} ${day}, ${date.getFullYear()}, ${time}`;
 }
+
+const ONLINE_THRESHOLD = 60_000; // 60 seconds
+
+export function isOnline(lastSeen: number | undefined): boolean {
+    if (!lastSeen) return false;
+    return Date.now() - lastSeen < ONLINE_THRESHOLD;
+}
