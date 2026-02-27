@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# tars chat
+
+A real-time chat application built with Next.js, Convex, and Clerk.
+
+## Features
+
+- **Real-time messaging** — Messages appear instantly via Convex's reactive queries
+- **Typing indicators** — See when someone is typing with a throttled, staleness-aware system
+- **Online status** — Heartbeat-based presence detection with green dot indicators
+- **Unread badges** — Per-conversation unread counts with read tracking
+- **User search** — Find and start conversations with any registered user
+- **Mobile responsive** — Full-width sidebar/chat toggle on smaller screens
+
+## Tech Stack
+
+- **Frontend** — Next.js 15 (App Router), React, Tailwind CSS, shadcn/ui
+- **Backend** — Convex (database, real-time queries, mutations)
+- **Auth** — Clerk (sign-in, user management, JWT tokens)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- A [Convex](https://convex.dev) account
+- A [Clerk](https://clerk.com) account
+
+### Setup
+
+1. Clone the repo and install dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/k4rtikay/tars-chat.git
+cd tars-chat
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Create a `.env.local` file with your keys:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+NEXT_PUBLIC_CONVEX_URL=your_convex_url
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Start the Convex dev server and Next.js:
 
-## Learn More
+```bash
+pnpm exec convex dev
+pnpm dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open [http://localhost:3000](http://localhost:3000) to start chatting.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+convex/              — Backend functions and schema
+  schema.ts          — Database tables (users, conversations, messages, typingIndicators)
+  users.ts           — User storage and online status
+  conversations.ts   — Conversation CRUD, listing, and read tracking
+  messages.ts        — Message sending and listing
+  typing.ts          — Typing indicator mutations and queries
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+src/
+  app/               — Next.js app router pages
+  components/
+    website/         — Chat UI components (sidebar, chat view, message list, etc.)
+    ui/              — shadcn/ui primitives
+  hooks/             — Custom hooks (useStoreUserEffect)
+  lib/               — Utilities (time formatting, online status)
+```
