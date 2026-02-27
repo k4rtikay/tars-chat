@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback, FormEvent } from "react";
+import { useState, useRef, useEffect, useCallback, SubmitEvent } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { SendHorizontal, User, ArrowLeft } from "lucide-react";
@@ -92,7 +92,7 @@ export default function ChatView({ user }: ChatViewProps) {
     }
   }, [conversationId, currentUserId, setTyping]);
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
     if (!message.trim() || !conversationId || !currentUserId) return;
 
