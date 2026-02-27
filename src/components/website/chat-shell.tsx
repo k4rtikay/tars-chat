@@ -43,6 +43,7 @@ export default function ChatShell({
     if (!isAuthenticated) {
         return (
             <div className="flex flex-col items-center justify-center h-screen gap-4 text-center px-8">
+                <div className="absolute top-0 z-[-2] h-screen w-screen bg-white bg-[radial-gradient(100%_50%_at_50%_0%,rgba(0,163,255,0.13)_0,rgba(0,163,255,0)_50%,rgba(0,163,255,0)_100%)]"></div>
                 <div className="flex items-center justify-center w-12 h-12 rounded-full bg-accent">
                     <MessageSquare className="w-6 h-6 text-muted-foreground" />
                 </div>
