@@ -1,6 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { MessageCircle, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Id } from "@/../convex/_generated/dataModel";
+import SearchResults from "@/components/website/search-results";
 
 interface Conversation {
     id: string;
@@ -10,27 +14,42 @@ interface Conversation {
 
 interface SidebarProps {
     conversations?: Conversation[];
+    currentUserId: Id<"users"> | null;
 }
 
-export default function Sidebar({ conversations = [] }: SidebarProps) {
+export default function Sidebar({
+    conversations = [],
+    currentUserId,
+}: SidebarProps) {
+    const [searchQuery, setSearchQuery] = useState("");
     const hasConversations = conversations.length > 0;
+    const isSearching = searchQuery.trim().length > 0;
 
     return (
         <aside className="flex flex-col w-80 h-screen border-r border-border bg-background">
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-border">
+            <div className="px-5 pt-5 pb-4 space-y-4 shrink-0">
                 <h1 className="text-lg font-semibold tracking-tight">tars chat</h1>
-                <button
-                    className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                    aria-label="Search conversations"
-                >
-                    <Search className="w-[18px] h-[18px]" />
-                </button>
+                <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                    <Input
+                        type="text"
+                        placeholder="Search people..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-9 h-9 text-sm bg-accent/50 border-none focus-visible:ring-1"
+                    />
+                </div>
             </div>
 
             {/* Body */}
             <div className="flex-1 overflow-y-auto">
-                {hasConversations ? (
+                {isSearching ? (
+                    <SearchResults
+                        searchQuery={searchQuery.trim()}
+                        currentUserId={currentUserId}
+                    />
+                ) : hasConversations ? (
                     // TODO: render conversation list
                     <div className="px-3 py-2">
                         {conversations.map((c) => (
