@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { MessageCircle, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { UserButton } from "@clerk/nextjs";
 import { Id } from "@/../convex/_generated/dataModel";
 import SearchResults from "@/components/website/search-results";
 import ConversationList from "@/components/website/conversation-list";
@@ -19,7 +20,16 @@ export default function Sidebar({ currentUserId }: SidebarProps) {
         <aside className="flex flex-col w-full md:w-80 h-screen md:border-r border-border bg-background">
             {/* Header */}
             <div className="px-5 pt-5 pb-4 space-y-4 shrink-0">
-                <h1 className="text-lg font-semibold tracking-tight">tars chat</h1>
+                <div className="flex items-center justify-between">
+                    <h1 className="text-lg font-semibold tracking-tight">tars chat</h1>
+                    <UserButton
+                        appearance={{
+                            elements: {
+                                avatarBox: "w-8 h-8",
+                            },
+                        }}
+                    />
+                </div>
                 <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                     <Input

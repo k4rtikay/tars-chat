@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback, FormEvent } from "react";
-import { UserButton } from "@clerk/nextjs";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { SendHorizontal, User, ArrowLeft } from "lucide-react";
@@ -117,7 +116,7 @@ export default function ChatView({ user }: ChatViewProps) {
   return (
     <>
       {/* Header */}
-      <header className="flex items-center justify-between px-4 md:px-6 py-4 border-b border-border shrink-0">
+      <header className="flex items-center px-4 md:px-6 py-4 border-b border-border shrink-0">
         <div className="flex items-center gap-2 md:gap-3">
           <button
             onClick={() => setSelectedUser(null)}
@@ -146,13 +145,6 @@ export default function ChatView({ user }: ChatViewProps) {
             </div>
           </div>
         </div>
-        <UserButton
-          appearance={{
-            elements: {
-              avatarBox: "w-8 h-8",
-            },
-          }}
-        />
       </header>
 
       {/* Messages */}

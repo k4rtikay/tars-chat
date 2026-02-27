@@ -2,12 +2,14 @@ export default function Loading() {
     return (
         <>
             {/* Skeleton header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-border shrink-0">
+            <div className="flex items-center px-6 py-4 border-b border-border shrink-0">
                 <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-accent animate-pulse" />
-                    <div className="h-4 w-24 bg-accent animate-pulse rounded" />
+                    <div className="space-y-1.5">
+                        <div className="h-4 w-24 bg-accent animate-pulse rounded" />
+                        <div className="h-2.5 w-14 bg-accent animate-pulse rounded" />
+                    </div>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-accent animate-pulse" />
             </div>
 
             {/* Skeleton messages */}
